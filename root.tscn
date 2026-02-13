@@ -25,6 +25,7 @@ visible = false
 layout_mode = 2
 _mainMenu = NodePath("../MainMenu")
 
-[node name="HostMenu" parent="Menus" unique_id=1276129990 instance=ExtResource("3_jnlp7")]
+[node name="HostMenu" parent="Menus" unique_id=1276129990 node_paths=PackedStringArray("_mainMenu") instance=ExtResource("3_jnlp7")]
 visible = false
 layout_mode = 2
+_mainMenu = NodePath("../MainMenu")
