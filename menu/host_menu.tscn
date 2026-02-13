@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://tptdgi57w53l"]
+
+[ext_resource type="Script" uid="uid://c0q37555tl6uj" path="res://menu/HostMenu.cs" id="1_umd6o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umd6o"]
+bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0.21100001)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0885599, 0.08855995, 0.088559814, 1)
+
+[node name="PanelContainer" type="PanelContainer" unique_id=1118696932]
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.1
+anchor_right = 0.6
+anchor_bottom = 0.9
+offset_left = -133.0
+offset_right = 133.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_umd6o")
+script = ExtResource("1_umd6o")
+
+[node name="HostMenu" type="ScrollContainer" parent="." unique_id=1276129990]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HostMenu" unique_id=963085976]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HostMenu/VBoxContainer" unique_id=1779792402]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label2" type="Label" parent="HostMenu/VBoxContainer" unique_id=912600626]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label3" type="Label" parent="HostMenu/VBoxContainer" unique_id=1925414418]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label4" type="Label" parent="HostMenu/VBoxContainer" unique_id=1920248730]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label5" type="Label" parent="HostMenu/VBoxContainer" unique_id=951944638]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label6" type="Label" parent="HostMenu/VBoxContainer" unique_id=403064880]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label7" type="Label" parent="HostMenu/VBoxContainer" unique_id=409538859]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label8" type="Label" parent="HostMenu/VBoxContainer" unique_id=1806770651]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"
+
+[node name="Label9" type="Label" parent="HostMenu/VBoxContainer" unique_id=1438266956]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Gibberisch"

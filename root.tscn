@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://b3bil168j8fws"]
+
+[ext_resource type="PackedScene" uid="uid://bwvoswp0m5xkl" path="res://menu/main_menu.tscn" id="1_vvh5c"]
+[ext_resource type="PackedScene" uid="uid://covygypksy5yk" path="res://menu/join_menu.tscn" id="2_28aoi"]
+[ext_resource type="PackedScene" uid="uid://tptdgi57w53l" path="res://menu/host_menu.tscn" id="3_jnlp7"]
+
+[node name="Root" type="Node" unique_id=583879818]
+
+[node name="Menus" type="MarginContainer" parent="." unique_id=1502606225]
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" parent="Menus" unique_id=206923136 node_paths=PackedStringArray("_joinMenu", "_hostMenu") instance=ExtResource("1_vvh5c")]
+layout_mode = 2
+_joinMenu = NodePath("../JoinMenu")
+_hostMenu = NodePath("../HostMenu")
+
+[node name="JoinMenu" parent="Menus" unique_id=1728844390 node_paths=PackedStringArray("_mainMenu") instance=ExtResource("2_28aoi")]
+visible = false
+layout_mode = 2
+_mainMenu = NodePath("../MainMenu")
+
+[node name="HostMenu" parent="Menus" unique_id=1276129990 instance=ExtResource("3_jnlp7")]
+visible = false
+layout_mode = 2
