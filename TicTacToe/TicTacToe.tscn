@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://cusf6rrl3ooag"]
+
+[ext_resource type="Script" uid="uid://bhvode0wwor3n" path="res://TicTacToe/TicTacToe.cs" id="1_auyhk"]
+[ext_resource type="PackedScene" uid="uid://bsp48puwev0xf" path="res://TicTacToe/Field.tscn" id="2_vf7lh"]
+[ext_resource type="Script" uid="uid://2e6h5vhh0kkk" path="res://TicTacToe/Board.cs" id="2_y0mhl"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3v5b1"]
+properties/0/path = NodePath("VBoxContainer/PanelContainer/Board/Field:Content")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("VBoxContainer/PanelContainer/Board/Field2:Content")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("VBoxContainer/PanelContainer/Board/Field3:Content")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("VBoxContainer/PanelContainer/Board/Field4:Content")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("VBoxContainer/PanelContainer/Board/Field5:Content")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("VBoxContainer/PanelContainer/Board/Field6:Content")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("VBoxContainer/PanelContainer/Board/Field7:Content")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath("VBoxContainer/PanelContainer/Board/Field8:Content")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath("VBoxContainer/PanelContainer/Board/Field9:Content")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath("VBoxContainer/PanelContainer/Board/Field:Clickable")
+properties/9/spawn = true
+properties/9/replication_mode = 2
+properties/10/path = NodePath("VBoxContainer/PanelContainer/Board/Field2:Clickable")
+properties/10/spawn = true
+properties/10/replication_mode = 2
+properties/11/path = NodePath("VBoxContainer/PanelContainer/Board/Field3:Clickable")
+properties/11/spawn = true
+properties/11/replication_mode = 2
+properties/12/path = NodePath("VBoxContainer/PanelContainer/Board/Field4:Clickable")
+properties/12/spawn = true
+properties/12/replication_mode = 2
+properties/13/path = NodePath("VBoxContainer/PanelContainer/Board/Field5:Clickable")
+properties/13/spawn = true
+properties/13/replication_mode = 2
+properties/14/path = NodePath("VBoxContainer/PanelContainer/Board/Field6:Clickable")
+properties/14/spawn = true
+properties/14/replication_mode = 2
+properties/15/path = NodePath("VBoxContainer/PanelContainer/Board/Field7:Clickable")
+properties/15/spawn = true
+properties/15/replication_mode = 2
+properties/16/path = NodePath("VBoxContainer/PanelContainer/Board/Field8:Clickable")
+properties/16/spawn = true
+properties/16/replication_mode = 2
+properties/17/path = NodePath("VBoxContainer/PanelContainer/Board/Field9:Clickable")
+properties/17/spawn = true
+properties/17/replication_mode = 2
+
+[sub_resource type="Theme" id="Theme_qysy1"]
+
+[node name="Game" type="Control" unique_id=1289785602 node_paths=PackedStringArray("_info")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_auyhk")
+_info = NodePath("VBoxContainer/Info")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=538000196]
+replication_interval = 0.1
+replication_config = SubResource("SceneReplicationConfig_3v5b1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=840918334]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Info" type="Label" parent="VBoxContainer" unique_id=1471625690]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Waiting for Player O"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1636843787]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Board" type="GridContainer" parent="VBoxContainer/PanelContainer" unique_id=207210824]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_qysy1")
+columns = 3
+script = ExtResource("2_y0mhl")
+
+[node name="Field" parent="VBoxContainer/PanelContainer/Board" unique_id=1045701724 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field2" parent="VBoxContainer/PanelContainer/Board" unique_id=1970285039 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field3" parent="VBoxContainer/PanelContainer/Board" unique_id=2130496863 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field4" parent="VBoxContainer/PanelContainer/Board" unique_id=539898289 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field5" parent="VBoxContainer/PanelContainer/Board" unique_id=856612131 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field6" parent="VBoxContainer/PanelContainer/Board" unique_id=1081635260 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field7" parent="VBoxContainer/PanelContainer/Board" unique_id=253794391 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field8" parent="VBoxContainer/PanelContainer/Board" unique_id=1466282642 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Field9" parent="VBoxContainer/PanelContainer/Board" unique_id=1315275817 instance=ExtResource("2_vf7lh")]
+layout_mode = 2
+
+[node name="Rematch" type="Button" parent="VBoxContainer" unique_id=1052957178]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+toggle_mode = true
+text = "Rematch"
+
+[connection signal="toggled" from="VBoxContainer/Rematch" to="." method="OnRematchButtonToggled"]

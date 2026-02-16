@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bsp48puwev0xf"]
+
+[ext_resource type="StyleBox" uid="uid://dkig02ovdfhgp" path="res://TicTacToe/border.tres" id="1_721j5"]
+[ext_resource type="Script" uid="uid://bdu3dnk032ev6" path="res://TicTacToe/Field.cs" id="2_c5e5h"]
+
+[node name="Field" type="PanelContainer" unique_id=1045701724]
+custom_minimum_size = Vector2(50, 50)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -11.5
+offset_right = 0.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_behavior_recursive = 2
+theme_override_styles/panel = ExtResource("1_721j5")
+script = ExtResource("2_c5e5h")
+
+[node name="Label" type="Label" parent="." unique_id=452922645]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+horizontal_alignment = 1
+vertical_alignment = 1
