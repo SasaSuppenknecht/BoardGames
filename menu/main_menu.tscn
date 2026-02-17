@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bwvoswp0m5xkl"]
 
 [ext_resource type="Script" uid="uid://gk5ekxu07h58" path="res://menu/MainMenu.cs" id="1_chmv6"]
-[ext_resource type="PackedScene" uid="uid://covygypksy5yk" path="res://menu/join_menu.tscn" id="2_f5okj"]
 
 [node name="MainMenu" type="VBoxContainer" unique_id=206923136 node_paths=PackedStringArray("_host", "_join")]
 anchors_preset = 15
@@ -16,7 +15,6 @@ alignment = 1
 script = ExtResource("1_chmv6")
 _host = NodePath("VBoxContainer/Host")
 _join = NodePath("VBoxContainer/Join")
-_joinScene = ExtResource("2_f5okj")
 
 [node name="Label" type="Label" parent="." unique_id=230011930]
 layout_mode = 2
