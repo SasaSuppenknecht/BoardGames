@@ -20,12 +20,21 @@ _port = NodePath("PortLine")
 _back = NodePath("MarginContainer/HBoxContainer/Back")
 _join = NodePath("MarginContainer/HBoxContainer/Join")
 
+[node name="PlayerLabel" type="Label" parent="." unique_id=1007104810]
+layout_mode = 2
+text = "Playername:"
+
+[node name="PlayerLine" type="LineEdit" parent="." unique_id=1123427578]
+layout_mode = 2
+placeholder_text = "Leave empty for random name"
+
 [node name="IPLabel" type="Label" parent="." unique_id=531496376]
 layout_mode = 2
 text = "IP Address:"
 
 [node name="IPLine" type="LineEdit" parent="." unique_id=1675950561]
 layout_mode = 2
+text = "92.117.229.125"
 
 [node name="PortLabel" type="Label" parent="." unique_id=711235101]
 layout_mode = 2
@@ -33,6 +42,8 @@ text = "Port:"
 
 [node name="PortLine" type="LineEdit" parent="." unique_id=145782457]
 layout_mode = 2
+text = "30000"
+max_length = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=179446038]
 custom_minimum_size = Vector2(200, 0)
@@ -53,3 +64,5 @@ text = "Back"
 custom_minimum_size = Vector2(160, 40)
 layout_mode = 2
 text = "Join"
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Join" to="." method="JoinGame"]

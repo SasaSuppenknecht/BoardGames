@@ -5,6 +5,9 @@ public partial class HostMenu : VBoxContainer {
     
     [Export] private Button _back;
     [Export] private Button _start;
+
+    [Export] private LineEdit _player;
+    [Export] private LineEdit _port;
     
     [Export] private MainMenu _mainMenu;
     [Export] private PackedScene[] _games;
@@ -16,7 +19,7 @@ public partial class HostMenu : VBoxContainer {
         };
 
         var gameList = GetNode("%GameList");
-        var root = GetTree().Root;
+        var sceneRoot = GetOwner();
         var connectionInfo = GetNode<ConnectionInfo>("%ConnectionInfo");
         var menus = (Control) GetParent();
         for (int i = 0; i < _games.Length; i++) {
@@ -31,10 +34,24 @@ public partial class HostMenu : VBoxContainer {
             label.MouseFilter = MouseFilterEnum.Stop;
             label.GuiInput += @event => {
                 if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left }) {
+                    string portText = _port.Text;
+                    if (!int.TryParse(portText, out int port) || port < 2000 || port > 65535) {
+                        return;
+                    }
+                    
+                    string player = _player.Text;
+                    if (player.Trim().Length == 0) {
+                        return;
+                    }
+                    
+                    GlobalData.Instance.IsHost = true;
+                    GlobalData.Instance.PlayerName = player;
+                    GlobalData.Instance.Port = port;
+                    
                     var gameNode = game.Instantiate();
-                    root.AddChild(gameNode);
-                    root.MoveChild(gameNode, 0);
-                    connectionInfo.UpdateInfo(2000);
+                    sceneRoot.AddChild(gameNode, true);
+                    sceneRoot.MoveChild(gameNode, 0);
+                    connectionInfo.UpdateInfo();
                     menus.Hide();
                 }
             };

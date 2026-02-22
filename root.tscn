@@ -46,4 +46,8 @@ script = ExtResource("5_jnlp7")
 
 [node name="IPQuery" type="HTTPRequest" parent="ConnectionInfo" unique_id=589105136]
 
+[node name="GameSpawner" type="MultiplayerSpawner" parent="." unique_id=436045179]
+_spawnable_scenes = PackedStringArray("uid://cusf6rrl3ooag")
+spawn_path = NodePath("..")
+
 [connection signal="request_completed" from="ConnectionInfo/IPQuery" to="ConnectionInfo" method="requestCompleted"]
