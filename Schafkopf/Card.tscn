@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dajylv0vt7t1k"]
+
+[ext_resource type="Texture2D" uid="uid://c7rl3sdxfyggx" path="res://Schafkopf/assets/schafkopf_standard.jpg" id="1_n6gkt"]
+[ext_resource type="Script" uid="uid://4hlcy40hnc3o" path="res://Schafkopf/Card.cs" id="2_1bt08"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1bt08"]
+resource_local_to_scene = true
+atlas = ExtResource("1_n6gkt")
+region = Rect2(876, 0, 146, 260)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1bt08"]
+properties/0/path = NodePath(".:Type")
+properties/0/spawn = true
+properties/0/replication_mode = 0
+
+[node name="Card" type="TextureRect" unique_id=340037012]
+custom_minimum_size = Vector2(146, 260)
+offset_right = 73.0
+offset_bottom = 130.0
+focus_mode = 1
+focus_behavior_recursive = 2
+mouse_filter = 0
+mouse_behavior_recursive = 2
+mouse_default_cursor_shape = 2
+texture = SubResource("AtlasTexture_1bt08")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("2_1bt08")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=16669668]
+replication_config = SubResource("SceneReplicationConfig_1bt08")

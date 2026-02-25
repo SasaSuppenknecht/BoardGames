@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://6cvckd12npjg"]
+
+[ext_resource type="PackedScene" uid="uid://bnf5ldhvgm8vl" path="res://Schafkopf/TurnedCard.tscn" id="1_vn4yt"]
+
+[node name="OtherPlayer" type="PanelContainer" unique_id=38697440]
+offset_right = 485.0
+offset_bottom = 187.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1163128420]
+layout_mode = 2
+alignment = 1
+
+[node name="DeckArea" type="VBoxContainer" parent="HBoxContainer" unique_id=516713263]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/DeckArea" unique_id=769019356]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Deck" type="Control" parent="HBoxContainer/DeckArea/CenterContainer" unique_id=756478208]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TurnedCard" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=1921669295 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_left = -75.0
+offset_top = -60.0
+offset_right = 0.0
+offset_bottom = 60.0
+
+[node name="TurnedCard2" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=845396118 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 15.0
+offset_bottom = 60.0
+
+[node name="TurnedCard3" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=934823146 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_left = -45.0
+offset_top = -60.0
+offset_right = 30.0
+offset_bottom = 60.0
+
+[node name="TurnedCard4" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=742901835 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_left = -30.0
+offset_top = -60.0
+offset_right = 45.0
+offset_bottom = 60.0
+
+[node name="TurnedCard5" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=345908234 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_left = -15.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+
+[node name="TurnedCard6" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=1157008733 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_top = -60.0
+offset_bottom = 60.0
+
+[node name="TurnedCard7" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=1998525750 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_left = 15.0
+offset_top = -60.0
+offset_right = 90.0
+offset_bottom = 60.0
+
+[node name="TurnedCard8" parent="HBoxContainer/DeckArea/CenterContainer/Deck" unique_id=875461721 instance=ExtResource("1_vn4yt")]
+layout_mode = 0
+offset_left = 30.0
+offset_top = -60.0
+offset_right = 105.0
+offset_bottom = 60.0
+
+[node name="PlayerName" type="Label" parent="HBoxContainer/DeckArea" unique_id=608108276]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "Playername"
+horizontal_alignment = 1
+
+[node name="TrickArea" type="VBoxContainer" parent="HBoxContainer" unique_id=1000411682]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TrickCards" type="CenterContainer" parent="HBoxContainer/TrickArea" unique_id=1693144895]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/TrickArea" unique_id=374542903]
+layout_mode = 2
+
+[node name="Trick" type="Label" parent="HBoxContainer/TrickArea/HBoxContainer" unique_id=302270282]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Stiche:"
+horizontal_alignment = 1
+
+[node name="TrickCount" type="Label" parent="HBoxContainer/TrickArea/HBoxContainer" unique_id=1149032832]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "0"
+horizontal_alignment = 1

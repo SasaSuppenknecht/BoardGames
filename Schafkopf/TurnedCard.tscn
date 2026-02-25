@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bnf5ldhvgm8vl"]
+
+[ext_resource type="Texture2D" uid="uid://12sr73my8i5g" path="res://Schafkopf/assets/card_backside.jpg" id="1_n77w7"]
+
+[node name="TurnedCard" type="TextureRect" unique_id=1921669295]
+custom_minimum_size = Vector2(75, 120)
+offset_right = 75.0
+offset_bottom = 120.0
+size_flags_horizontal = 3
+texture = ExtResource("1_n77w7")
+expand_mode = 1
