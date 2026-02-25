@@ -26,13 +26,8 @@ public partial class TicTacToe : Control {
             fields[index] = node;
             node.FieldUpdated += OnFieldUpdated;
         }
-
-        var args = OS.GetCmdlineArgs();
-
-        var peer = new ENetMultiplayerPeer();
-        var multiplayer = GetTree().GetMultiplayer();
-        if (args.Contains("--server")) {
-            peer.CreateServer(Port, 2);
+        
+        if (GlobalData.Instance.IsHost) {
             Player = "X";
             OtherPlayer = "O";
             _gameState = new();
@@ -42,11 +37,9 @@ public partial class TicTacToe : Control {
                 InitGame();
             };
         } else {
-            peer.CreateClient(Ip, Port);
             Player = "O";
             OtherPlayer = "X";
         }
-        multiplayer.MultiplayerPeer = peer;
     }
 
     public void OnRematchButtonToggled(bool toggledOn) {

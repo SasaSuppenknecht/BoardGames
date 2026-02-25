@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [GlobalClass]
 public partial class TurnBasedMultiplayerGame : MultiplayerGame {
@@ -9,49 +10,76 @@ public partial class TurnBasedMultiplayerGame : MultiplayerGame {
     [Signal]
     public delegate void TurnBeginsEventHandler();
 
-    private List<long> _peerOrder;
-    private int _current = 0;
+    public long CurrentPlayer { get; private set; } = -1;
+
+    protected List<long> PeerOrder;
     
     public override void _Ready() {
         base._Ready();
 
         if (Multiplayer.IsServer()) {
-            _peerOrder = new() {ServerId};
+            PeerOrder = new() {ServerId};
         }
     }
     
     public void EndTurn() {
         RpcId(ServerId, MethodName.EndTurnMessage);
     }
-    
+
+    public override void StartGame() {
+        if (Multiplayer.IsServer()) {
+            Rpc(MethodName.TransmitPlayerOrder, PeerOrder.ToArray());
+            Rpc(MethodName.GameStartedMessage);
+        }
+        Rpc(MethodName.NextPlayer, PeerOrder[0]);
+    }
+
     protected override void OnPeerConnected(long id) {
-        _peerOrder.Add(id);
+        PeerOrder.Add(id);
         base.OnPeerConnected(id);
     }
 
     protected override void OnPeerDisconnected(long id) {
-        // todo this needs to do more checking if _current is outside the range
-        _peerOrder.Remove(id);
+        // todo probably should just kill game if one player disconnects
+        PeerOrder.Remove(id);
         base.OnPeerDisconnected(id);
     }
-    
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
     private void EndTurnMessage() {
-        var peerId = Multiplayer.GetRemoteSenderId();
-        int index = _peerOrder.IndexOf(peerId);
-        if (_current != index) { // check if peer is legit
-            GD.PushWarning("Received EndTurnMessage from illegal peer with id: " + peerId);
-            return;
+        if (Multiplayer.IsServer()) {
+            var peerId = Multiplayer.GetRemoteSenderId();
+            if (peerId != CurrentPlayer) { // check if peer is legit
+                GD.PushWarning("Received EndTurnMessage from illegal peer with id: " + peerId);
+                return;
+            }
+
+            long next = DetermineNextPlayer();
+            Rpc(MethodName.NextPlayer, next);
         }
-        // determine next player and tell it that its turn has begun
-        _current = (_current + 1) % _peerOrder.Count;
-        RpcId(_peerOrder[_current], MethodName.BeginTurn);
     }
 
-    [Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true)]
-    private void BeginTurn() {
-        EmitSignalTurnBegins();
+    protected virtual long DetermineNextPlayer() {
+        int index = PeerOrder.IndexOf(CurrentPlayer);
+        int nextIndex = (index + 1) % PeerOrder.Count;
+        return PeerOrder[nextIndex];
     }
-    
+
+    [Rpc(CallLocal = true)]
+    private void NextPlayer(long id) {
+        CurrentPlayer = id;
+        if (Multiplayer.GetUniqueId() == id) {
+            EmitSignalTurnBegins();
+        }
+    }
+
+    [Rpc]
+    private void TransmitPlayerOrder(long[] peerOrder) {
+        PeerOrder = peerOrder.ToList();
+    }
+
+    [Rpc(CallLocal = true)]
+    private void GameStartedMessage() {
+        EmitSignalGameStarted();
+    }
 }

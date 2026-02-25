@@ -1,63 +1,64 @@
 [gd_scene format=3 uid="uid://cusf6rrl3ooag"]
 
 [ext_resource type="Script" uid="uid://bhvode0wwor3n" path="res://TicTacToe/TicTacToe.cs" id="1_auyhk"]
+[ext_resource type="Script" uid="uid://cn78ag2rkxmf8" path="res://general/TurnBasedMultiplayerGame.cs" id="2_mmod0"]
 [ext_resource type="PackedScene" uid="uid://bsp48puwev0xf" path="res://TicTacToe/Field.tscn" id="2_vf7lh"]
 [ext_resource type="Script" uid="uid://2e6h5vhh0kkk" path="res://TicTacToe/Board.cs" id="2_y0mhl"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3v5b1"]
 properties/0/path = NodePath("VBoxContainer/PanelContainer/Board/Field:Content")
-properties/0/spawn = true
+properties/0/spawn = false
 properties/0/replication_mode = 2
 properties/1/path = NodePath("VBoxContainer/PanelContainer/Board/Field2:Content")
-properties/1/spawn = true
+properties/1/spawn = false
 properties/1/replication_mode = 2
 properties/2/path = NodePath("VBoxContainer/PanelContainer/Board/Field3:Content")
-properties/2/spawn = true
+properties/2/spawn = false
 properties/2/replication_mode = 2
 properties/3/path = NodePath("VBoxContainer/PanelContainer/Board/Field4:Content")
-properties/3/spawn = true
+properties/3/spawn = false
 properties/3/replication_mode = 2
 properties/4/path = NodePath("VBoxContainer/PanelContainer/Board/Field5:Content")
-properties/4/spawn = true
+properties/4/spawn = false
 properties/4/replication_mode = 2
 properties/5/path = NodePath("VBoxContainer/PanelContainer/Board/Field6:Content")
-properties/5/spawn = true
+properties/5/spawn = false
 properties/5/replication_mode = 2
 properties/6/path = NodePath("VBoxContainer/PanelContainer/Board/Field7:Content")
-properties/6/spawn = true
+properties/6/spawn = false
 properties/6/replication_mode = 2
 properties/7/path = NodePath("VBoxContainer/PanelContainer/Board/Field8:Content")
-properties/7/spawn = true
+properties/7/spawn = false
 properties/7/replication_mode = 2
 properties/8/path = NodePath("VBoxContainer/PanelContainer/Board/Field9:Content")
-properties/8/spawn = true
+properties/8/spawn = false
 properties/8/replication_mode = 2
 properties/9/path = NodePath("VBoxContainer/PanelContainer/Board/Field:Clickable")
-properties/9/spawn = true
+properties/9/spawn = false
 properties/9/replication_mode = 2
 properties/10/path = NodePath("VBoxContainer/PanelContainer/Board/Field2:Clickable")
-properties/10/spawn = true
+properties/10/spawn = false
 properties/10/replication_mode = 2
 properties/11/path = NodePath("VBoxContainer/PanelContainer/Board/Field3:Clickable")
-properties/11/spawn = true
+properties/11/spawn = false
 properties/11/replication_mode = 2
 properties/12/path = NodePath("VBoxContainer/PanelContainer/Board/Field4:Clickable")
-properties/12/spawn = true
+properties/12/spawn = false
 properties/12/replication_mode = 2
 properties/13/path = NodePath("VBoxContainer/PanelContainer/Board/Field5:Clickable")
-properties/13/spawn = true
+properties/13/spawn = false
 properties/13/replication_mode = 2
 properties/14/path = NodePath("VBoxContainer/PanelContainer/Board/Field6:Clickable")
-properties/14/spawn = true
+properties/14/spawn = false
 properties/14/replication_mode = 2
 properties/15/path = NodePath("VBoxContainer/PanelContainer/Board/Field7:Clickable")
-properties/15/spawn = true
+properties/15/spawn = false
 properties/15/replication_mode = 2
 properties/16/path = NodePath("VBoxContainer/PanelContainer/Board/Field8:Clickable")
-properties/16/spawn = true
+properties/16/spawn = false
 properties/16/replication_mode = 2
 properties/17/path = NodePath("VBoxContainer/PanelContainer/Board/Field9:Clickable")
-properties/17/spawn = true
+properties/17/spawn = false
 properties/17/replication_mode = 2
 
 [sub_resource type="Theme" id="Theme_qysy1"]
@@ -71,6 +72,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_auyhk")
 _info = NodePath("VBoxContainer/Info")
+
+[node name="TurnBasedMultiplayerGame" type="Node" parent="." unique_id=1054551569]
+script = ExtResource("2_mmod0")
+metadata/_custom_type_script = "uid://cn78ag2rkxmf8"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=538000196]
 replication_interval = 0.1

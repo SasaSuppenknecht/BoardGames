@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cjeaavhl8qi7o" path="res://menu/JoinMenu.cs" id="1_4p8da"]
 
-[node name="JoinMenu" type="VBoxContainer" unique_id=1728844390 node_paths=PackedStringArray("_ip", "_port", "_back", "_join")]
+[node name="JoinMenu" type="VBoxContainer" unique_id=1728844390 node_paths=PackedStringArray("_ip", "_port", "_player", "_back", "_join")]
 anchors_preset = -1
 anchor_left = 0.3
 anchor_top = 0.3
@@ -17,6 +17,7 @@ alignment = 1
 script = ExtResource("1_4p8da")
 _ip = NodePath("IPLine")
 _port = NodePath("PortLine")
+_player = NodePath("PlayerLine")
 _back = NodePath("MarginContainer/HBoxContainer/Back")
 _join = NodePath("MarginContainer/HBoxContainer/Join")
 
@@ -26,6 +27,7 @@ text = "Playername:"
 
 [node name="PlayerLine" type="LineEdit" parent="." unique_id=1123427578]
 layout_mode = 2
+text = "test2"
 placeholder_text = "Leave empty for random name"
 
 [node name="IPLabel" type="Label" parent="." unique_id=531496376]
@@ -34,7 +36,7 @@ text = "IP Address:"
 
 [node name="IPLine" type="LineEdit" parent="." unique_id=1675950561]
 layout_mode = 2
-text = "92.117.229.125"
+text = "92.117.229.160"
 
 [node name="PortLabel" type="Label" parent="." unique_id=711235101]
 layout_mode = 2

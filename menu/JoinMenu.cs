@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 public partial class JoinMenu : VBoxContainer {
@@ -51,6 +52,17 @@ public partial class JoinMenu : VBoxContainer {
             return;
         }
         GetTree().Root.GetMultiplayer().MultiplayerPeer = peer;
+
+        Multiplayer.ConnectedToServer += OnServerConnection;
+        
         ((Control)GetParent()).Hide();
+    }
+
+    private void OnServerConnection() {
+        var sceneMultiplayer = Multiplayer as SceneMultiplayer;
+        byte[] nameData = Encoding.UTF8.GetBytes(GlobalData.Instance.PlayerName);
+        sceneMultiplayer.SendBytes(nameData, (int) MultiplayerPeer.TargetPeerServer, MultiplayerPeer.TransferModeEnum.Reliable, GlobalData.COMM_CHANNEL); 
+        
+        sceneMultiplayer.ConnectedToServer -= OnServerConnection;
     }
 }
