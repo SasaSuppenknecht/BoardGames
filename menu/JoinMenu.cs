@@ -41,10 +41,7 @@ public partial class JoinMenu : VBoxContainer {
         if (player.Trim().Length == 0) {
             return;
         }
-
-        GlobalData.Instance.PlayerName = player;
-        GlobalData.Instance.IP = ip;
-        GlobalData.Instance.Port = port;
+        
 
         ENetMultiplayerPeer peer = new ENetMultiplayerPeer();
         Error error = peer.CreateClient(ip, port);
@@ -60,8 +57,6 @@ public partial class JoinMenu : VBoxContainer {
 
     private void OnServerConnection() {
         var sceneMultiplayer = Multiplayer as SceneMultiplayer;
-        byte[] nameData = Encoding.UTF8.GetBytes(GlobalData.Instance.PlayerName);
-        sceneMultiplayer.SendBytes(nameData, (int) MultiplayerPeer.TargetPeerServer, MultiplayerPeer.TransferModeEnum.Reliable, GlobalData.COMM_CHANNEL); 
         
         sceneMultiplayer.ConnectedToServer -= OnServerConnection;
     }

@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://covygypksy5yk" path="res://menu/join_menu.tscn" id="2_28aoi"]
 [ext_resource type="PackedScene" uid="uid://tptdgi57w53l" path="res://menu/host_menu.tscn" id="3_jnlp7"]
 [ext_resource type="PackedScene" uid="uid://cusf6rrl3ooag" path="res://TicTacToe/TicTacToe.tscn" id="4_28aoi"]
-[ext_resource type="Script" uid="uid://2it17c2k26cq" path="res://menu/ConnectionInfo.cs" id="5_jnlp7"]
+[ext_resource type="PackedScene" uid="uid://qk1uvm2yu5pu" path="res://general/MultiplayerConnection.tscn" id="5_jnlp7"]
 
 [node name="Node" type="Node" unique_id=1597327746]
 
@@ -33,21 +33,8 @@ layout_mode = 2
 _mainMenu = NodePath("../MainMenu")
 _games = Array[PackedScene]([ExtResource("4_28aoi")])
 
-[node name="ConnectionInfo" type="Label" parent="." unique_id=1014793178]
-unique_name_in_owner = true
-visible = false
-offset_right = 42.0
-offset_bottom = 49.0
-tooltip_text = "Copy IP to clipboard"
-mouse_filter = 1
-mouse_behavior_recursive = 2
-theme_override_font_sizes/font_size = 12
-script = ExtResource("5_jnlp7")
-
-[node name="IPQuery" type="HTTPRequest" parent="ConnectionInfo" unique_id=589105136]
-
 [node name="GameSpawner" type="MultiplayerSpawner" parent="." unique_id=436045179]
 _spawnable_scenes = PackedStringArray("uid://cusf6rrl3ooag")
 spawn_path = NodePath("..")
 
-[connection signal="request_completed" from="ConnectionInfo/IPQuery" to="ConnectionInfo" method="requestCompleted"]
+[node name="MultiplayerConnection" parent="." unique_id=1537918554 instance=ExtResource("5_jnlp7")]

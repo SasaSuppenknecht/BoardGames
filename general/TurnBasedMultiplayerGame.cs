@@ -4,46 +4,57 @@ using System.Collections.Generic;
 using System.Linq;
 
 [GlobalClass]
-public partial class TurnBasedMultiplayerGame : MultiplayerGame {
+public abstract partial class TurnBasedMultiplayerGame : Node {
+    [Signal] public delegate void TurnBeginsEventHandler();
     
-
-    [Signal]
-    public delegate void TurnBeginsEventHandler();
-
+    public MultiplayerConnection MultiplayerConnection;
+    
     public long CurrentPlayer { get; private set; } = -1;
 
     protected List<long> PeerOrder;
     
     public override void _Ready() {
-        base._Ready();
-
+        // todo check if this is needed
+        var node = GetNode("../../MultiplayerConnection");
+        if (node is MultiplayerConnection multiplayerConnection) {
+            MultiplayerConnection = multiplayerConnection;
+        } else {
+            GD.PushError("Could not find MultiplayerConnection");
+        }
+        
         if (Multiplayer.IsServer()) {
-            PeerOrder = new() {ServerId};
+            PeerOrder = new() {MultiplayerConnection.ServerId};
+            Multiplayer.PeerConnected += OnPeerConnected;
+            Multiplayer.PeerDisconnected += OnPeerDisconnected;
         }
     }
     
     public void EndTurn() {
-        RpcId(ServerId, MethodName.EndTurnMessage);
+        RpcId(MultiplayerConnection.ServerId, MethodName.EndTurnMessage);
     }
 
-    public override void StartGame() {
+    public virtual void StartGame() {
         if (Multiplayer.IsServer()) {
             Rpc(MethodName.TransmitPlayerOrder, PeerOrder.ToArray());
-            Rpc(MethodName.GameStartedMessage);
         }
-        Rpc(MethodName.NextPlayer, PeerOrder[0]);
+        Rpc(MethodName.AnnounceNextPlayer, PeerOrder[0]);
     }
 
-    protected override void OnPeerConnected(long id) {
+    protected virtual long DetermineNextPlayer() {
+        int index = PeerOrder.IndexOf(CurrentPlayer);
+        int nextIndex = (index + 1) % PeerOrder.Count;
+        return PeerOrder[nextIndex];
+    }
+    
+    private void OnPeerConnected(long id) {
         PeerOrder.Add(id);
-        base.OnPeerConnected(id);
     }
 
-    protected override void OnPeerDisconnected(long id) {
+    private void OnPeerDisconnected(long id) {
         // todo probably should just kill game if one player disconnects
         PeerOrder.Remove(id);
-        base.OnPeerDisconnected(id);
     }
+    
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
     private void EndTurnMessage() {
@@ -55,31 +66,20 @@ public partial class TurnBasedMultiplayerGame : MultiplayerGame {
             }
 
             long next = DetermineNextPlayer();
-            Rpc(MethodName.NextPlayer, next);
+            Rpc(MethodName.AnnounceNextPlayer, next);
         }
     }
-
-    protected virtual long DetermineNextPlayer() {
-        int index = PeerOrder.IndexOf(CurrentPlayer);
-        int nextIndex = (index + 1) % PeerOrder.Count;
-        return PeerOrder[nextIndex];
-    }
-
-    [Rpc(CallLocal = true)]
-    private void NextPlayer(long id) {
-        CurrentPlayer = id;
-        if (Multiplayer.GetUniqueId() == id) {
-            EmitSignalTurnBegins();
-        }
-    }
-
+    
     [Rpc]
     private void TransmitPlayerOrder(long[] peerOrder) {
         PeerOrder = peerOrder.ToList();
     }
-
+    
     [Rpc(CallLocal = true)]
-    private void GameStartedMessage() {
-        EmitSignalGameStarted();
+    private void AnnounceNextPlayer(long id) {
+        CurrentPlayer = id;
+        if (Multiplayer.GetUniqueId() == id) {
+            EmitSignalTurnBegins();
+        }
     }
 }
