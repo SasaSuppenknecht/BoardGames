@@ -27,7 +27,7 @@ public partial class TicTacToe : Control {
             node.FieldUpdated += OnFieldUpdated;
         }
         
-        if (GlobalData.Instance.IsHost) {
+        if (true) {
             Player = "X";
             OtherPlayer = "O";
             _gameState = new();

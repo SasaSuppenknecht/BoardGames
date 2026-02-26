@@ -15,10 +15,6 @@ run/main_scene="uid://b3bil168j8fws"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
 config/icon="res://icon.svg"
 
-[autoload]
-
-GlobalData="*uid://beppq706scnks"
-
 [display]
 
 window/size/viewport_width=1669

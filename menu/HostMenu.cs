@@ -20,7 +20,7 @@ public partial class HostMenu : VBoxContainer {
 
         var gameList = GetNode("%GameList");
         var sceneRoot = GetOwner();
-        var connectionInfo = GetNode<ConnectionInfo>("%ConnectionInfo");
+        var connectionInfo = GetNode<Label>("%ConnectionInfo");
         var menus = (Control) GetParent();
         for (int i = 0; i < _games.Length; i++) {
             var game = _games[i];
@@ -44,14 +44,9 @@ public partial class HostMenu : VBoxContainer {
                         return;
                     }
                     
-                    GlobalData.Instance.IsHost = true;
-                    GlobalData.Instance.PlayerName = player;
-                    GlobalData.Instance.Port = port;
-                    
                     var gameNode = game.Instantiate();
                     sceneRoot.AddChild(gameNode, true);
                     sceneRoot.MoveChild(gameNode, 0);
-                    connectionInfo.UpdateInfo();
                     menus.Hide();
                 }
             };

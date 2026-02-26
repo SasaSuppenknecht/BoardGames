@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://qk1uvm2yu5pu"]
+
+[ext_resource type="Script" uid="uid://bwmbwt6vdvmdw" path="res://general/MultiplayerConnection.cs" id="1_ojiy8"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ijk2f"]
+properties/0/path = NodePath(".:MaxPlayerCount")
+properties/0/spawn = false
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:CurrentPlayerCount")
+properties/1/spawn = false
+properties/1/replication_mode = 2
+
+[node name="MultiplayerConnection" type="Node" unique_id=1537918554]
+script = ExtResource("1_ojiy8")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2009302690]
+replication_config = SubResource("SceneReplicationConfig_ijk2f")
+
+[node name="ConnectionInfo" type="Label" parent="." unique_id=824979016]
+visible = false
+offset_right = 42.0
+offset_bottom = 49.0
+tooltip_text = "Copy IP to clipboard"
+mouse_filter = 1
+mouse_behavior_recursive = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="IPQuery" type="HTTPRequest" parent="." unique_id=135851453]
+
+[connection signal="gui_input" from="ConnectionInfo" to="." method="OnLabelGuiInput"]
+[connection signal="request_completed" from="IPQuery" to="." method="OnRequestCompleted"]

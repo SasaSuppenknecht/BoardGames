@@ -27,10 +27,6 @@ public partial class Card : TextureRect {
     
     private CardType _cardType;
 
-    public override void _Ready() {
-        CardPressed += GetParent().GetOwner<Schafkopf>().OnCardPressed;
-    }
-
     public override void _GuiInput(InputEvent @event) {
         if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left }) {
             EmitSignalCardPressed(this);

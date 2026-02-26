@@ -1,30 +1,22 @@
 [gd_scene format=3 uid="uid://v2g0b5ovlqvj"]
 
-[ext_resource type="Script" uid="uid://ciiu7ki1tj1if" path="res://Schafkopf/Schafkopf.cs" id="1_w5iu2"]
-[ext_resource type="Script" uid="uid://c4bc5qbncrcyl" path="res://Schafkopf/SchafkopfLogic.cs" id="3_mcbak"]
-[ext_resource type="PackedScene" uid="uid://dajylv0vt7t1k" path="res://Schafkopf/Card.tscn" id="4_4sbtc"]
+[ext_resource type="Script" uid="uid://c4bc5qbncrcyl" path="res://Schafkopf/Schafkopf.cs" id="1_w5iu2"]
+[ext_resource type="Script" uid="uid://xqkekmyywgyy" path="res://Schafkopf/GameBoard.cs" id="2_ctelg"]
 [ext_resource type="PackedScene" uid="uid://6cvckd12npjg" path="res://Schafkopf/OtherPlayer.tscn" id="5_4sbtc"]
 
-[node name="Schafkopf" type="Control" unique_id=1695272317 node_paths=PackedStringArray("_deck", "_middle", "_schafkopfLogic")]
+[node name="Schafkopf" type="Node" unique_id=2001683228]
+script = ExtResource("1_w5iu2")
+
+[node name="GameBoard" type="Control" parent="." unique_id=1695272317]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_w5iu2")
-_deck = NodePath("PanelContainer/HBoxContainer/MarginContainer/Deck")
-_middle = NodePath("CenterContainer/Middle")
-_schafkopfLogic = NodePath("SchafkopfLogic")
+script = ExtResource("2_ctelg")
 
-[node name="SchafkopfLogic" type="Node" parent="." unique_id=1647508142 node_paths=PackedStringArray("_middle", "_deck")]
-script = ExtResource("3_mcbak")
-_middle = NodePath("../CenterContainer/Middle")
-_deck = NodePath("../PanelContainer/HBoxContainer/MarginContainer/Deck")
-_cardScene = ExtResource("4_4sbtc")
-Debug = true
-
-[node name="CenterContainer" type="CenterContainer" parent="." unique_id=208138434]
+[node name="CenterContainer" type="CenterContainer" parent="GameBoard" unique_id=208138434]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.25
@@ -34,15 +26,15 @@ anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="CenterContainer" unique_id=1266404138]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="GameBoard/CenterContainer" unique_id=1266404138]
 _spawnable_scenes = PackedStringArray("uid://dajylv0vt7t1k")
 spawn_path = NodePath("../Middle")
 spawn_limit = 4
 
-[node name="Middle" type="HBoxContainer" parent="CenterContainer" unique_id=1016666794]
+[node name="Middle" type="HBoxContainer" parent="GameBoard/CenterContainer" unique_id=1016666794]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1401739767]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameBoard" unique_id=1401739767]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
@@ -51,19 +43,19 @@ anchor_bottom = 0.25
 grow_horizontal = 2
 alignment = 1
 
-[node name="OtherPlayer" parent="HBoxContainer" unique_id=38697440 instance=ExtResource("5_4sbtc")]
+[node name="OtherPlayer" parent="GameBoard/HBoxContainer" unique_id=38697440 instance=ExtResource("5_4sbtc")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OtherPlayer2" parent="HBoxContainer" unique_id=1921074917 instance=ExtResource("5_4sbtc")]
+[node name="OtherPlayer2" parent="GameBoard/HBoxContainer" unique_id=1921074917 instance=ExtResource("5_4sbtc")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OtherPlayer3" parent="HBoxContainer" unique_id=375962961 instance=ExtResource("5_4sbtc")]
+[node name="OtherPlayer3" parent="GameBoard/HBoxContainer" unique_id=375962961 instance=ExtResource("5_4sbtc")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=285020715]
+[node name="PanelContainer" type="PanelContainer" parent="GameBoard" unique_id=285020715]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -73,44 +65,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=1217453905]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameBoard/PanelContainer" unique_id=1217453905]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer" unique_id=2104401208]
+[node name="MarginContainer" type="MarginContainer" parent="GameBoard/PanelContainer/HBoxContainer" unique_id=2104401208]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
 
-[node name="Deck" type="HBoxContainer" parent="PanelContainer/HBoxContainer/MarginContainer" unique_id=501076034]
+[node name="Deck" type="HBoxContainer" parent="GameBoard/PanelContainer/HBoxContainer/MarginContainer" unique_id=501076034]
 layout_mode = 2
 alignment = 1
 
-[node name="TrickArea" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=1367197323]
+[node name="TrickArea" type="VBoxContainer" parent="GameBoard/PanelContainer/HBoxContainer" unique_id=1367197323]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlayerName" type="Label" parent="PanelContainer/HBoxContainer/TrickArea" unique_id=598731698]
+[node name="PlayerName" type="Label" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea" unique_id=598731698]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 text = "Playername"
 horizontal_alignment = 1
 
-[node name="TrickCards" type="CenterContainer" parent="PanelContainer/HBoxContainer/TrickArea" unique_id=1909610719]
+[node name="TrickCards" type="CenterContainer" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea" unique_id=1909610719]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/TrickArea" unique_id=1771407413]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea" unique_id=1771407413]
 layout_mode = 2
 
-[node name="Trick" type="Label" parent="PanelContainer/HBoxContainer/TrickArea/HBoxContainer" unique_id=1534279791]
+[node name="Trick" type="Label" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea/HBoxContainer" unique_id=1534279791]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 text = "Stiche:"
 horizontal_alignment = 1
 
-[node name="TrickCount" type="Label" parent="PanelContainer/HBoxContainer/TrickArea/HBoxContainer" unique_id=1174732081]
+[node name="TrickCount" type="Label" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea/HBoxContainer" unique_id=1174732081]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -118,4 +110,8 @@ size_flags_vertical = 8
 text = "0"
 horizontal_alignment = 1
 
-[connection signal="TurnBegins" from="SchafkopfLogic" to="." method="OnTurnBegins"]
+[node name="GameSelectionDialog" type="Window" parent="." unique_id=1382596978]
+oversampling_override = 1.0
+initial_position = 1
+size = Vector2i(370, 510)
+visible = false
