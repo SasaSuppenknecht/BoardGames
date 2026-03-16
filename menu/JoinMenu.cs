@@ -1,29 +1,22 @@
 using Godot;
-using System;
-using System.Text;
 using System.Text.RegularExpressions;
 
 public partial class JoinMenu : VBoxContainer {
 
-    [Export] private LineEdit _ip;
-    [Export] private LineEdit _port;
-    [Export] private LineEdit _player;
-
-    [Export] private Button _back;
-    [Export] private Button _join;
-
     [Export] private MainMenu _mainMenu;
+    [Export] private MultiplayerConnection _multiplayerConnection;
 
-    private string _ipPattern = @"(\d{1,3}.){3}\d{1,3}";
+    private string _ipPattern = @"(?:\d{1,3}.){3}\d{1,3}|localhost";
 
     public override void _Ready() {
-        _back.Pressed += () => {
+        GetNode<Button>("%Back").Pressed += () => {
             _mainMenu.Show();
             Hide();
         };
     }
 
     private void JoinGame() {
+        var _ip = GetNode<LineEdit>("IPLine");
         string ip = _ip.Text;
         ip = ip.Trim();
         Regex regex = new Regex(_ipPattern);
@@ -31,33 +24,21 @@ public partial class JoinMenu : VBoxContainer {
         if (!match.Success || match.Value.Length != ip.Length) {
             return;
         }
-            
+        
+        var _port = GetNode<LineEdit>("PortLine");
         string portText = _port.Text;
         if (!int.TryParse(portText, out int port) || port < 2000 || port > 65535) {
             return;
         }
 
+        var _player = GetNode<LineEdit>("PlayerLine");
         string player = _player.Text;
         if (player.Trim().Length == 0) {
             return;
         }
         
-
-        ENetMultiplayerPeer peer = new ENetMultiplayerPeer();
-        Error error = peer.CreateClient(ip, port);
-        if (error != Error.Ok) {
-            return;
-        }
-        GetTree().Root.GetMultiplayer().MultiplayerPeer = peer;
-
-        Multiplayer.ConnectedToServer += OnServerConnection;
+        _multiplayerConnection.SetupClient(player, ip, port);
         
         ((Control)GetParent()).Hide();
-    }
-
-    private void OnServerConnection() {
-        var sceneMultiplayer = Multiplayer as SceneMultiplayer;
-        
-        sceneMultiplayer.ConnectedToServer -= OnServerConnection;
     }
 }

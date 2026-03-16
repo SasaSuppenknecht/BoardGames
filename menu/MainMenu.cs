@@ -2,19 +2,16 @@ using Godot;
 using System;
 
 public partial class MainMenu : VBoxContainer {
-
-    [Export] private Button _host;
-    [Export] private Button _join;
     
     [Export] private JoinMenu _joinMenu;
     [Export] private HostMenu _hostMenu;
 
     public override void _Ready() {
-        _join.Pressed += () => {
+        GetNode<Button>("%Join").Pressed += () => {
             _joinMenu.Show();
             Hide();
         };
-        _host.Pressed += () => {
+        GetNode<Button>("%Host").Pressed += () => {
             _hostMenu.Show();
             Hide();
         };

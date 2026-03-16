@@ -2,7 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using BoardGames.general;
 
@@ -10,16 +9,8 @@ public partial class MultiplayerConnection : Node {
     public const long ServerId = MultiplayerPeer.TargetPeerServer;
     public const long BroadcastId = MultiplayerPeer.TargetPeerBroadcast;
     public const int CommChannel = 4;
-    
-    private int _maxPlayerCount = 2;
-    private Dictionary<long, string> _idToPlayer = new ();
 
-    private string _playerName;
-    private string _ip = "localhost";
-    private int _port = -1;
-    
-    [Export]
-    public int MaxPlayerCount {
+    [Export] public int MaxPlayerCount {
         private set {
             if (value >= 2) {
                 _maxPlayerCount = value;
@@ -27,16 +18,30 @@ public partial class MultiplayerConnection : Node {
         }
         get => _maxPlayerCount;
     }
-    
-    [Export]
-    public int CurrentPlayerCount { get; private set; } = 1;
+    private int _maxPlayerCount = 2;
 
+    [Export] public int CurrentPlayerCount { get; private set; } = 1;
+
+    [Export] private bool Debug = false;
+
+    private Dictionary<long, string> _idToPlayer = new ();
+    private string _playerName;
+    private string _ip = "localhost";
+    private int _port = -1;
+    
     public override void _Ready() {
-        if (OS.GetCmdlineArgs().Contains("Anna")) {
-            SetupServer("Anna", 2, 2000);
-        } else {
-            var name = OS.GetCmdlineArgs()[^1];
-            SetupClient(name, "localhost", 2000);
+        if (Debug) {
+            if (OS.GetCmdlineArgs().Contains("Anna")) {
+                var name = OS.GetCmdlineArgs()[^1];
+                SetupServer(name, MaxPlayerCount, 30000);
+                GetParent().CallDeferred(
+                    Node.MethodName.AddChild, 
+                    ResourceLoader.Load<PackedScene>("res://Schafkopf/Schafkopf.tscn").Instantiate()
+                    );
+            } else {
+                var name = OS.GetCmdlineArgs()[^1];
+                SetupClient(name, "localhost", 30000);
+            }
         }
     }
 
@@ -59,11 +64,6 @@ public partial class MultiplayerConnection : Node {
         UpdateConnectionInfo();
 
         return true;
-    }
-
-    private void ConnectedToServer() {
-        SendData(BroadcastId, TransmissionCodes.PlayerNameTransmission, _playerName);
-        Multiplayer.ConnectedToServer -= ConnectedToServer;
     }
     
     public bool SetupServer(string playerName, int maxPlayerCount, int port) {
@@ -140,10 +140,15 @@ public partial class MultiplayerConnection : Node {
         
         (Multiplayer as SceneMultiplayer).SendBytes(packet, (int) target, MultiplayerPeer.TransferModeEnum.Reliable, CommChannel);
     }
-
+    
+    private void ConnectedToServer() {
+        SendData(BroadcastId, TransmissionCodes.PlayerNameTransmission, _playerName);
+        Multiplayer.ConnectedToServer -= ConnectedToServer;
+    }
+    
     private void UpdateConnectionInfo() {
         var label = GetNode<Label>("ConnectionInfo");
-        label.Text = $"IP:{_ip}\nPort: {_port}";
+        label.Text = $"IP: {_ip}\nPort: {_port}";
         label.Show();
     }
     
@@ -188,7 +193,7 @@ public partial class MultiplayerConnection : Node {
     // GuiInput from Label (ConnectionInfo)
     private void OnLabelGuiInput(InputEvent @event) {
         if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left }) {
-            DisplayServer.ClipboardSet($"{_ip}:{_port}");
+            DisplayServer.ClipboardSet($"{_ip}");
         }
     }
 

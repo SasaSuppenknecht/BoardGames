@@ -6,39 +6,16 @@ using BoardGames.Schafkopf;
 
 public partial class Schafkopf : TurnBasedMultiplayerGame {
     
-    [Export] private Container _middle;
-    [Export] private Container _deck;
+    [Export] private GameBoard _gameBoard;
     
-    [Export] private PackedScene _cardScene;
+    private List<CardType> _playedCards = new(4);
+    private SchafkopfLogic _schafkopfLogic = new();
 
-    private bool _isTurn = false;
-    private List<CardType> _playedCards = new (4);
-
-    public override void _Ready() {
-        Multiplayer.PeerConnected += OnPeerConnected;
+    public override int GetMaxPlayerCount() {
+        return 4;
     }
 
-    private void OnPeerConnected(long id) {
-        if (MultiplayerConnection.CurrentPlayerCount == MultiplayerConnection.MaxPlayerCount) {
-            StartGame();
-        }
-    }
-
-    public void PlayCard(int cardType) {
-        Rpc(MethodName._PlayCard, cardType);
-    }
-    
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
-    private void _PlayCard(int cardType) {
-        if (Multiplayer.IsServer()) {
-            Card card = _cardScene.Instantiate<Card>();
-            card.Type = (CardType)cardType;
-            _middle.AddChild(card, true);
-        } 
-        _playedCards.Add((CardType) cardType);
-    }
-
-    public void StartGame() {
+    public override void StartGame() {
         Random random = new Random();
         var values = ((CardType[]) Enum.GetValues(typeof(CardType)))
                 .Where(type => !CardTypeInfo.NotSchafkopfCards.Contains(type))
@@ -55,37 +32,84 @@ public partial class Schafkopf : TurnBasedMultiplayerGame {
         
         base.StartGame();
     }
-    
-    public void OnTurnBegins() {
-        _isTurn = true;
-    }
-
-    public void OnCardPressed(Card card) {
-        if (_isTurn) {
-            card.CardPressed -= OnCardPressed;
-            _deck.RemoveChild(card);
-            _isTurn = false;
-        }
-    }
 
     protected override long DetermineNextPlayer() {
-        if (_middle.GetChildCount() == 4) {
+        if (_playedCards.Count == 4) {
+            // of the played cards, determine which card wins the trick
+            int winner = _schafkopfLogic.DetermineTrickWinner(_playedCards);
+            // get index of current player...
+            int indexOfCurrentPlayer = PeerOrder.IndexOf(CurrentPlayer);
+            // ... in order to determine the next player based on the winner index
+            long nextPlayer = PeerOrder[(indexOfCurrentPlayer + 1 + winner) % 4];
             
+            Rpc(MethodName._AwardTrick, nextPlayer);
+            Rpc(MethodName._ClearPlayedCards);
             
-            _playedCards.Clear();
-            return 0;
+            return nextPlayer;
         } else {
             return base.DetermineNextPlayer();
         }
     }
 
-    [Rpc(CallLocal = true)]
-    private void TransmitCards(int[] cards) {
-        foreach (int cardType in cards) {
-            Card card = _cardScene.Instantiate<Card>();
-            card.Type = (CardType)cardType;
-            _deck.AddChild(card, true);
+    protected override void OnPeerConnected(long id) {
+        base.OnPeerConnected(id);
+        if (PeerOrder.Count == MultiplayerConnection.MaxPlayerCount) {
+            StartGame();
+        }
+    }
+
+    private void OnTurnChanged(bool isMyTurn) {
+        Card[] cards = _gameBoard.GetCardsInDeck();
+        if (isMyTurn) {
+            CardType? firstCard = _playedCards.Count > 0 ? _playedCards[0] : null;
+            List<int> indices = _schafkopfLogic.DetermineAllowedCardsToPlay(cards.Select(card => card.Type).ToList(), firstCard);
+            for (int index = 0; index < cards.Length; index++) {
+                if (!indices.Contains(index)) {
+                    cards[index].Clickable = false;
+                }
+            }
+        } else { // generally enable cards for next turn again
+            foreach (var card in cards) {
+                card.Clickable = true;
+            }
         }
     }
     
+    [Rpc(CallLocal = true)]
+    private void TransmitCards(int[] cards) {
+        foreach (int cardType in cards) {
+            _gameBoard.AddCardToDeck((CardType) cardType);
+        }
+    }
+
+    private void PlayCard(Card card) {
+        RpcId(MultiplayerConnection.ServerId, MethodName._PlayCard, (int)card.Type);
+        EndTurn();
+    }
+    
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void _PlayCard(int cardType) {
+        _playedCards.Add((CardType) cardType);
+        Rpc(MethodName._SendPlayedCard, cardType);
+        
+        if (_gameBoard.GetPlayedCardCount() == 4) {
+            _gameBoard.ClearMiddle(); 
+        }
+        _gameBoard.AddCardToMiddle((CardType) cardType);
+    }
+
+    [Rpc]
+    private void _SendPlayedCard(int cardType) {
+        _playedCards.Add((CardType) cardType);
+    }
+
+    [Rpc(CallLocal = true)]
+    private void _ClearPlayedCards() {
+        _playedCards.Clear();
+    }
+
+    [Rpc(CallLocal = true)]
+    private void _AwardTrick(int id) {
+        
+    }
 }

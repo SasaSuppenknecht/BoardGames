@@ -1,7 +1,21 @@
 <Project Sdk="Godot.NET.Sdk/4.6.0">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
+
+    <!-- gdUnit4 package dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0"/>
+        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc1"/>
+        <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0"/>
+        <PackageReference Include="gdUnit4.analyzers" Version="1.0.0">
+            <PrivateAssets>none</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="tests\.runsettings" />
+    </ItemGroup>
 </Project>

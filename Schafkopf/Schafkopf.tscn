@@ -2,12 +2,29 @@
 
 [ext_resource type="Script" uid="uid://c4bc5qbncrcyl" path="res://Schafkopf/Schafkopf.cs" id="1_w5iu2"]
 [ext_resource type="Script" uid="uid://xqkekmyywgyy" path="res://Schafkopf/GameBoard.cs" id="2_ctelg"]
+[ext_resource type="PackedScene" uid="uid://dajylv0vt7t1k" path="res://Schafkopf/Card.tscn" id="3_ctelg"]
 [ext_resource type="PackedScene" uid="uid://6cvckd12npjg" path="res://Schafkopf/OtherPlayer.tscn" id="5_4sbtc"]
+[ext_resource type="Script" uid="uid://cc2354oirjxq7" path="res://Schafkopf/Log.cs" id="5_mcbak"]
 
-[node name="Schafkopf" type="Node" unique_id=2001683228]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ctelg"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 7
+
+[node name="Schafkopf" type="Node" unique_id=2001683228 node_paths=PackedStringArray("_gameBoard")]
 script = ExtResource("1_w5iu2")
+_gameBoard = NodePath("GameBoard")
 
-[node name="GameBoard" type="Control" parent="." unique_id=1695272317]
+[node name="GameBoard" type="Control" parent="." unique_id=1695272317 node_paths=PackedStringArray("_deck", "_middle")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +32,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_ctelg")
+_deck = NodePath("PanelContainer/HBoxContainer/MarginContainer/Deck")
+_middle = NodePath("CenterContainer/Middle")
+_cardScene = ExtResource("3_ctelg")
 
 [node name="CenterContainer" type="CenterContainer" parent="GameBoard" unique_id=208138434]
 layout_mode = 1
@@ -58,9 +78,9 @@ size_flags_horizontal = 3
 [node name="PanelContainer" type="PanelContainer" parent="GameBoard" unique_id=285020715]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.1
+anchor_left = 0.05
 anchor_top = 0.65
-anchor_right = 0.9
+anchor_right = 0.95
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -78,8 +98,8 @@ layout_mode = 2
 alignment = 1
 
 [node name="TrickArea" type="VBoxContainer" parent="GameBoard/PanelContainer/HBoxContainer" unique_id=1367197323]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="PlayerName" type="Label" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea" unique_id=598731698]
 layout_mode = 2
@@ -103,15 +123,50 @@ text = "Stiche:"
 horizontal_alignment = 1
 
 [node name="TrickCount" type="Label" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea/HBoxContainer" unique_id=1174732081]
-unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 text = "0"
 horizontal_alignment = 1
 
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1284804189]
+anchors_preset = -1
+anchor_top = 0.3
+anchor_right = 0.15
+anchor_bottom = 0.6
+offset_top = -26.0
+offset_right = 53.0
+offset_bottom = 26.0
+grow_vertical = 2
+theme_override_constants/separation = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=827748261]
+layout_mode = 2
+text = "Info:"
+
+[node name="Log" type="TextEdit" parent="VBoxContainer" unique_id=1077992249]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_readonly_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/read_only = SubResource("StyleBoxFlat_ctelg")
+editable = false
+context_menu_enabled = false
+wrap_mode = 1
+virtual_keyboard_enabled = false
+script = ExtResource("5_mcbak")
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=26253600]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="GameSelectionDialog" type="Window" parent="." unique_id=1382596978]
 oversampling_override = 1.0
 initial_position = 1
 size = Vector2i(370, 510)
 visible = false
+
+[connection signal="TurnChanged" from="." to="." method="OnTurnChanged"]
+[connection signal="TurnChanged" from="." to="GameBoard" method="OnTurnChanged"]
+[connection signal="CardPlayed" from="GameBoard" to="." method="PlayCard"]
+[connection signal="child_entered_tree" from="GameBoard/PanelContainer/HBoxContainer/MarginContainer/Deck" to="GameBoard" method="OnNodeAdded"]
