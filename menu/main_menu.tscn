@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://gk5ekxu07h58" path="res://menu/MainMenu.cs" id="1_chmv6"]
 
-[node name="MainMenu" type="VBoxContainer" unique_id=206923136 node_paths=PackedStringArray("_host", "_join")]
+[node name="MainMenu" type="VBoxContainer" unique_id=206923136]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,8 +13,6 @@ size_flags_vertical = 4
 theme_override_constants/separation = 40
 alignment = 1
 script = ExtResource("1_chmv6")
-_host = NodePath("VBoxContainer/Host")
-_join = NodePath("VBoxContainer/Join")
 
 [node name="Label" type="Label" parent="." unique_id=230011930]
 layout_mode = 2
@@ -29,11 +27,13 @@ size_flags_vertical = 4
 theme_override_constants/separation = 16
 
 [node name="Host" type="Button" parent="VBoxContainer" unique_id=1292102996]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 text = "Host"
 
 [node name="Join" type="Button" parent="VBoxContainer" unique_id=1040509198]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 text = "Join"

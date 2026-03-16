@@ -24,8 +24,25 @@ public partial class Card : TextureRect {
             atlasTexture.Region = new Rect2(size.X * col, size.Y * row, size.X, size.Y);
         }
     }
-    
     private CardType _cardType;
+    
+    [Export]
+    public bool Clickable {
+        get => _clickable;
+        set {
+            _clickable = value;
+            if (value) {
+                MouseFilter = MouseFilterEnum.Stop;
+                Modulate = new Color(1, 1, 1, 1);
+            } else {
+                MouseFilter = MouseFilterEnum.Ignore;
+                Modulate = new Color(0.4f, 0.4f, 0.4f);
+            }
+        }
+    }
+
+    private bool _clickable = true;
+    
 
     public override void _GuiInput(InputEvent @event) {
         if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left }) {

@@ -6,7 +6,7 @@
 [sub_resource type="AtlasTexture" id="AtlasTexture_1bt08"]
 resource_local_to_scene = true
 atlas = ExtResource("1_n6gkt")
-region = Rect2(876, 0, 146, 260)
+region = Rect2(292, 520, 146, 260)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1bt08"]
 properties/0/path = NodePath(".:Type")
@@ -26,6 +26,7 @@ texture = SubResource("AtlasTexture_1bt08")
 expand_mode = 1
 stretch_mode = 5
 script = ExtResource("2_1bt08")
+Type = 22
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=16669668]
 replication_config = SubResource("SceneReplicationConfig_1bt08")

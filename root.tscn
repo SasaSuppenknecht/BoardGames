@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://tptdgi57w53l" path="res://menu/host_menu.tscn" id="3_jnlp7"]
 [ext_resource type="PackedScene" uid="uid://cusf6rrl3ooag" path="res://TicTacToe/TicTacToe.tscn" id="4_28aoi"]
 [ext_resource type="PackedScene" uid="uid://qk1uvm2yu5pu" path="res://general/MultiplayerConnection.tscn" id="5_jnlp7"]
+[ext_resource type="PackedScene" uid="uid://v2g0b5ovlqvj" path="res://Schafkopf/Schafkopf.tscn" id="5_l8v81"]
 
 [node name="Node" type="Node" unique_id=1597327746]
 
@@ -22,19 +23,21 @@ layout_mode = 2
 _joinMenu = NodePath("../JoinMenu")
 _hostMenu = NodePath("../HostMenu")
 
-[node name="JoinMenu" parent="Menus" unique_id=1728844390 node_paths=PackedStringArray("_mainMenu") instance=ExtResource("2_28aoi")]
+[node name="JoinMenu" parent="Menus" unique_id=1728844390 node_paths=PackedStringArray("_mainMenu", "_multiplayerConnection") instance=ExtResource("2_28aoi")]
 visible = false
 layout_mode = 2
 _mainMenu = NodePath("../MainMenu")
+_multiplayerConnection = NodePath("../../MultiplayerConnection")
 
-[node name="HostMenu" parent="Menus" unique_id=1276129990 node_paths=PackedStringArray("_mainMenu") instance=ExtResource("3_jnlp7")]
+[node name="HostMenu" parent="Menus" unique_id=1276129990 node_paths=PackedStringArray("_mainMenu", "_multiplayerConnection") instance=ExtResource("3_jnlp7")]
 visible = false
 layout_mode = 2
 _mainMenu = NodePath("../MainMenu")
-_games = Array[PackedScene]([ExtResource("4_28aoi")])
+_games = Array[PackedScene]([ExtResource("4_28aoi"), ExtResource("5_l8v81")])
+_multiplayerConnection = NodePath("../../MultiplayerConnection")
 
 [node name="GameSpawner" type="MultiplayerSpawner" parent="." unique_id=436045179]
-_spawnable_scenes = PackedStringArray("uid://cusf6rrl3ooag")
+_spawnable_scenes = PackedStringArray("uid://cusf6rrl3ooag", "uid://v2g0b5ovlqvj")
 spawn_path = NodePath("..")
 
 [node name="MultiplayerConnection" parent="." unique_id=1537918554 instance=ExtResource("5_jnlp7")]
