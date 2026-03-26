@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c4bc5qbncrcyl" path="res://Schafkopf/Schafkopf.cs" id="1_w5iu2"]
 [ext_resource type="Script" uid="uid://xqkekmyywgyy" path="res://Schafkopf/GameBoard.cs" id="2_ctelg"]
 [ext_resource type="PackedScene" uid="uid://dajylv0vt7t1k" path="res://Schafkopf/Card.tscn" id="3_ctelg"]
+[ext_resource type="PackedScene" uid="uid://r477nxmbysdw" path="res://Schafkopf/TrickCards.tscn" id="5_0gss8"]
 [ext_resource type="PackedScene" uid="uid://6cvckd12npjg" path="res://Schafkopf/OtherPlayer.tscn" id="5_4sbtc"]
 [ext_resource type="Script" uid="uid://cc2354oirjxq7" path="res://Schafkopf/Log.cs" id="5_mcbak"]
 
@@ -54,7 +55,7 @@ spawn_limit = 4
 [node name="Middle" type="HBoxContainer" parent="GameBoard/CenterContainer" unique_id=1016666794]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GameBoard" unique_id=1401739767]
+[node name="OtherPlayers" type="HBoxContainer" parent="GameBoard" unique_id=1401739767]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
@@ -63,15 +64,15 @@ anchor_bottom = 0.25
 grow_horizontal = 2
 alignment = 1
 
-[node name="OtherPlayer" parent="GameBoard/HBoxContainer" unique_id=38697440 instance=ExtResource("5_4sbtc")]
+[node name="OtherPlayer" parent="GameBoard/OtherPlayers" unique_id=38697440 instance=ExtResource("5_4sbtc")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OtherPlayer2" parent="GameBoard/HBoxContainer" unique_id=1921074917 instance=ExtResource("5_4sbtc")]
+[node name="OtherPlayer2" parent="GameBoard/OtherPlayers" unique_id=1921074917 instance=ExtResource("5_4sbtc")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OtherPlayer3" parent="GameBoard/HBoxContainer" unique_id=375962961 instance=ExtResource("5_4sbtc")]
+[node name="OtherPlayer3" parent="GameBoard/OtherPlayers" unique_id=375962961 instance=ExtResource("5_4sbtc")]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -111,6 +112,11 @@ horizontal_alignment = 1
 [node name="TrickCards" type="CenterContainer" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea" unique_id=1909610719]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="TrickCards" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea/TrickCards" unique_id=1921669295 instance=ExtResource("5_0gss8")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GameBoard/PanelContainer/HBoxContainer/TrickArea" unique_id=1771407413]
 layout_mode = 2

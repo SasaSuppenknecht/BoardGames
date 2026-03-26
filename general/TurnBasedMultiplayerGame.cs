@@ -28,6 +28,7 @@ public abstract partial class TurnBasedMultiplayerGame : Node {
             MultiplayerConnection = multiplayerConnection;
         } else {
             GD.PushError("Could not find MultiplayerConnection");
+            return;
         }
         
         if (Multiplayer.IsServer()) {
@@ -41,11 +42,6 @@ public abstract partial class TurnBasedMultiplayerGame : Node {
         IsTurn = false;
         RpcId(MultiplayerConnection.ServerId, MethodName.EndTurnMessage);
     }
-
-    public virtual void StartGame() {
-        Rpc(MethodName.TransmitPlayerOrder, PeerOrder.ToArray());
-        Rpc(MethodName.AnnounceNextPlayer, PeerOrder[1]); // todo change to 0
-    } 
 
     public abstract int GetMaxPlayerCount();
 
@@ -64,6 +60,21 @@ public abstract partial class TurnBasedMultiplayerGame : Node {
         PeerOrder.Remove(id);
     }
     
+    
+    [Rpc(CallLocal = true)]
+    protected virtual void AnnounceNextPlayer(long id) {
+        CurrentPlayer = id;
+        if (Multiplayer.GetUniqueId() == id) {
+            IsTurn = true;  
+        }
+    }
+    
+    [Rpc]
+    private void TransmitPlayerOrder(long[] peerOrder) {
+        PeerOrder = peerOrder.ToList();
+        //todo debug only, remove later
+        GetNode<Label>("%Label2").Text = (PeerOrder.IndexOf(Multiplayer.GetUniqueId()) + 1).ToString();
+    }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
     private void EndTurnMessage() {
@@ -76,21 +87,6 @@ public abstract partial class TurnBasedMultiplayerGame : Node {
 
             long next = DetermineNextPlayer();
             Rpc(MethodName.AnnounceNextPlayer, next);
-        }
-    }
-    
-    [Rpc]
-    private void TransmitPlayerOrder(long[] peerOrder) {
-        PeerOrder = peerOrder.ToList();
-        //todo debug only, remove later
-        GetNode<Label>("%Label2").Text = (PeerOrder.IndexOf(Multiplayer.GetUniqueId()) + 1).ToString();
-    }
-    
-    [Rpc(CallLocal = true)]
-    private void AnnounceNextPlayer(long id) {
-        CurrentPlayer = id;
-        if (Multiplayer.GetUniqueId() == id) {
-            IsTurn = true;  
         }
     }
 }

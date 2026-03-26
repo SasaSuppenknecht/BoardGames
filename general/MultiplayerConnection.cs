@@ -6,9 +6,9 @@ using System.Text;
 using BoardGames.general;
 
 public partial class MultiplayerConnection : Node {
+    
     public const long ServerId = MultiplayerPeer.TargetPeerServer;
     public const long BroadcastId = MultiplayerPeer.TargetPeerBroadcast;
-    public const int CommChannel = 4;
 
     [Export] public int MaxPlayerCount {
         private set {
@@ -23,9 +23,10 @@ public partial class MultiplayerConnection : Node {
     [Export] public int CurrentPlayerCount { get; private set; } = 1;
 
     [Export] private bool Debug = false;
+    
+    public string PlayerName { get; private set; }
 
-    private Dictionary<long, string> _idToPlayer = new ();
-    private string _playerName;
+    private Godot.Collections.Dictionary<long, string> _idToPlayer;
     private string _ip = "localhost";
     private int _port = -1;
     
@@ -46,7 +47,7 @@ public partial class MultiplayerConnection : Node {
     }
 
     public bool SetupClient(string playerName, string ip, int port) {
-        _playerName = playerName;
+        PlayerName = playerName;
         _ip = ip;
         _port = port;
         
@@ -56,8 +57,8 @@ public partial class MultiplayerConnection : Node {
             return false;
         }
         
-        (Multiplayer as SceneMultiplayer).PeerPacket += OnPacketReceived;
-        Multiplayer.ConnectedToServer += ConnectedToServer;
+        Multiplayer.ConnectedToServer += OnConnectedToServer;
+        Multiplayer.PeerConnected += OnPeerConnected;
         Multiplayer.PeerDisconnected += OnPeerDisconnected;
         
         Multiplayer.MultiplayerPeer = peer;
@@ -65,9 +66,9 @@ public partial class MultiplayerConnection : Node {
 
         return true;
     }
-    
+
     public bool SetupServer(string playerName, int maxPlayerCount, int port) {
-        _playerName = playerName;
+        PlayerName = playerName;
         MaxPlayerCount = maxPlayerCount;
         _port = port;
         
@@ -80,70 +81,27 @@ public partial class MultiplayerConnection : Node {
             return false;
         }
         
-        (Multiplayer as SceneMultiplayer).PeerPacket += OnPacketReceived;
         Multiplayer.PeerConnected += OnPeerConnected;
         Multiplayer.PeerDisconnected += OnPeerDisconnected;
         
         Multiplayer.MultiplayerPeer = peer;
 
+        _idToPlayer = new();
         _idToPlayer[ServerId] = playerName;
         return true;
     }
 
-    public void SendData(long target, TransmissionCodes transmissionId, params object[] data) {
-        int totalSize = sizeof(int);
-        if (data.Length > 0) {
-            foreach (object obj in data) {
-                totalSize += obj switch {
-                    int i => sizeof(int),
-                    long i => sizeof(long),
-                    float f => sizeof(float),
-                    double d => sizeof(double),
-                    bool b => sizeof(bool),
-                    string s => s.Length,
-                    _ => throw new NotImplementedException()
-                };
-            }
+    public string GetNameOfId(long id) {
+        bool isPresent = _idToPlayer.TryGetValue(id, out string name);
+        if (isPresent) {
+            return name;
+        } else {
+            return null;
         }
-        byte[] packet = new byte[totalSize];
-        Buffer.BlockCopy(BitConverter.GetBytes((int) transmissionId), 0, packet, 0, sizeof(int));
-        int offset = sizeof(int);
-        foreach (object obj in data) {
-            switch (obj) {
-                case int i:
-                    Buffer.BlockCopy(BitConverter.GetBytes(i), 0, packet, offset, sizeof(int));
-                    offset += sizeof(int);
-                    break;
-                case long l:
-                    Buffer.BlockCopy(BitConverter.GetBytes(l), 0, packet, offset, sizeof(long));
-                    offset += sizeof(long);
-                    break;
-                case float f:
-                    Buffer.BlockCopy(BitConverter.GetBytes(f), 0, packet, offset, sizeof(float));
-                    offset += sizeof(float);
-                    break;
-                case double d:
-                    Buffer.BlockCopy(BitConverter.GetBytes(d), 0, packet, offset, sizeof(double));
-                    offset += sizeof(double);
-                    break;
-                case bool b:
-                    Buffer.BlockCopy(BitConverter.GetBytes(b), 0, packet, offset, sizeof(bool));
-                    offset += sizeof(bool);
-                    break;
-                case string s:
-                    byte[] stringBytes = Encoding.UTF8.GetBytes(s);
-                    Buffer.BlockCopy(stringBytes, 0, packet, offset, stringBytes.Length);
-                    offset += stringBytes.Length;
-                    break;
-            }
-        }
-        
-        (Multiplayer as SceneMultiplayer).SendBytes(packet, (int) target, MultiplayerPeer.TransferModeEnum.Reliable, CommChannel);
     }
-    
-    private void ConnectedToServer() {
-        SendData(BroadcastId, TransmissionCodes.PlayerNameTransmission, _playerName);
-        Multiplayer.ConnectedToServer -= ConnectedToServer;
+
+    public void TransmitData() {
+        Rpc(MethodName.TransmitPlayerNamesToClient, _idToPlayer);
     }
     
     private void UpdateConnectionInfo() {
@@ -152,32 +110,31 @@ public partial class MultiplayerConnection : Node {
         label.Show();
     }
     
+    private void OnConnectedToServer() {
+        RpcId(ServerId, MethodName.TransmitPlayerNameToServer, PlayerName);
+    }
+    
     private void OnPeerConnected(long id) {
         CurrentPlayerCount++;
     }
 
     private void OnPeerDisconnected(long id) {
+        CurrentPlayerCount--;
         if (Multiplayer.IsServer()) {
-            CurrentPlayerCount--;
+            _idToPlayer.Remove(id);
         }
-        _idToPlayer.Remove(id);
     }
-    
-    private void OnPacketReceived(long id, byte[] data) {
-        var transmissionId = (TransmissionCodes) BitConverter.ToInt32(data, 0);
-        switch (transmissionId) {
-            case TransmissionCodes.PlayerNameTransmission: {
-                string playerName = Encoding.UTF8.GetString(data, sizeof(int), data.Length - sizeof(int));
-                _idToPlayer[id] = playerName;
-                SendData(id, TransmissionCodes.PlayerNameTransmissionResponse, _playerName);
-                break;
-            }
-            case TransmissionCodes.PlayerNameTransmissionResponse: {
-                string playerName = Encoding.UTF8.GetString(data, sizeof(int), data.Length - sizeof(int));
-                _idToPlayer[id] = playerName;
-                break;
-            }
-        }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
+    private void TransmitPlayerNameToServer(string playerName) {
+        var senderId = Multiplayer.GetRemoteSenderId();
+        _idToPlayer[senderId] = playerName;
+        GD.Print($"{_idToPlayer} on {PlayerName}");
+    }
+
+    [Rpc]
+    private void TransmitPlayerNamesToClient(Godot.Collections.Dictionary<long, string> idToPlayer) {
+        _idToPlayer = idToPlayer;
     }
     
     // requestCompleted from HTTPRequest (IPQuery)
