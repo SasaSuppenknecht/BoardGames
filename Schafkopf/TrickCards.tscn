@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://r477nxmbysdw"]
+
+[ext_resource type="Texture2D" uid="uid://12sr73my8i5g" path="res://Schafkopf/assets/card_backside.jpg" id="1_x8nyc"]
+[ext_resource type="Script" uid="uid://66cionysy4qa" path="res://Schafkopf/TrickCards.cs" id="2_oltye"]
+[ext_resource type="PackedScene" uid="uid://dajylv0vt7t1k" path="res://Schafkopf/Card.tscn" id="3_dmq2a"]
+[ext_resource type="Texture2D" uid="uid://c7rl3sdxfyggx" path="res://Schafkopf/assets/schafkopf_standard.jpg" id="4_ta7po"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ke67w"]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22428054, 0.11314168, 0.20451555, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2v2ai"]
+resource_local_to_scene = true
+atlas = ExtResource("4_ta7po")
+region = Rect2(292, 520, 146, 260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mmmeq"]
+resource_local_to_scene = true
+atlas = ExtResource("4_ta7po")
+region = Rect2(292, 520, 146, 260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpvnd"]
+resource_local_to_scene = true
+atlas = ExtResource("4_ta7po")
+region = Rect2(292, 520, 146, 260)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfvee"]
+resource_local_to_scene = true
+atlas = ExtResource("4_ta7po")
+region = Rect2(292, 520, 146, 260)
+
+[node name="TrickCards" type="TextureRect" unique_id=1921669295]
+custom_minimum_size = Vector2(75, 120)
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 76.0
+offset_bottom = 121.0
+size_flags_horizontal = 3
+mouse_filter = 0
+texture = ExtResource("1_x8nyc")
+expand_mode = 1
+script = ExtResource("2_oltye")
+
+[node name="Window" type="Popup" parent="." unique_id=1043157901]
+disable_3d = true
+oversampling_override = 1.0
+title = "Letzter Stich"
+initial_position = 2
+size = Vector2i(626, 280)
+borderless = false
+
+[node name="Panel" type="PanelContainer" parent="Window" unique_id=1176911726]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_ke67w")
+
+[node name="MarginContainer" type="MarginContainer" parent="Window/Panel" unique_id=1626959795]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/Panel/MarginContainer" unique_id=1866273355]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Card" parent="Window/Panel/MarginContainer/HBoxContainer" unique_id=340037012 instance=ExtResource("3_dmq2a")]
+layout_mode = 2
+texture = SubResource("AtlasTexture_2v2ai")
+
+[node name="Card2" parent="Window/Panel/MarginContainer/HBoxContainer" unique_id=1517052609 instance=ExtResource("3_dmq2a")]
+layout_mode = 2
+texture = SubResource("AtlasTexture_mmmeq")
+
+[node name="Card3" parent="Window/Panel/MarginContainer/HBoxContainer" unique_id=991845668 instance=ExtResource("3_dmq2a")]
+layout_mode = 2
+texture = SubResource("AtlasTexture_gpvnd")
+
+[node name="Card4" parent="Window/Panel/MarginContainer/HBoxContainer" unique_id=193012382 instance=ExtResource("3_dmq2a")]
+layout_mode = 2
+texture = SubResource("AtlasTexture_wfvee")
+
+[connection signal="gui_input" from="." to="." method="OnGuiInput"]

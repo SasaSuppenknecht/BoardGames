@@ -50,12 +50,14 @@ public partial class GameBoard : Node {
         _isTurn = isTurn;
     }
 
-    public void AwardTrick(int index) {
-        
+    public void AwardTrick(int index, CardType[] cards) {
+        GetNode("OtherPlayers").GetChild<OtherPlayer>(index).AddTrick(cards);
     }
 
-    public void AwardTrickToSelf() {
-        
+    public void AwardTrickToSelf(CardType[] cards) {
+        var trickCards = GetNode<TrickCards>("%TrickCards");
+        trickCards.SetCards(cards);
+        trickCards.Visible = true;
     }
     
     // node added to _deck

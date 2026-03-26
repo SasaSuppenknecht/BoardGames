@@ -7,5 +7,6 @@ custom_minimum_size = Vector2(75, 120)
 offset_right = 75.0
 offset_bottom = 120.0
 size_flags_horizontal = 3
+mouse_filter = 0
 texture = ExtResource("1_n77w7")
 expand_mode = 1

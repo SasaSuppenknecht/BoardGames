@@ -1,10 +1,26 @@
 [gd_scene format=3 uid="uid://6cvckd12npjg"]
 
+[ext_resource type="Script" uid="uid://bp77en5wtrg6s" path="res://Schafkopf/OtherPlayer.cs" id="1_ki0is"]
 [ext_resource type="PackedScene" uid="uid://bnf5ldhvgm8vl" path="res://Schafkopf/TurnedCard.tscn" id="1_vn4yt"]
+[ext_resource type="PackedScene" uid="uid://r477nxmbysdw" path="res://Schafkopf/TrickCards.tscn" id="3_r6fc8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r6fc8"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 7
 
 [node name="OtherPlayer" type="PanelContainer" unique_id=38697440]
 offset_right = 485.0
 offset_bottom = 187.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_r6fc8")
+script = ExtResource("1_ki0is")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1163128420]
 layout_mode = 2
@@ -94,6 +110,11 @@ size_flags_horizontal = 3
 [node name="TrickCards" type="CenterContainer" parent="HBoxContainer/TrickArea" unique_id=1693144895]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="TrickCards" parent="HBoxContainer/TrickArea/TrickCards" unique_id=1763350973 instance=ExtResource("3_r6fc8")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/TrickArea" unique_id=374542903]
 layout_mode = 2
